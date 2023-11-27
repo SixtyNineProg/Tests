@@ -46,11 +46,7 @@ public class ProductTestData {
   }
 
   public ProductDto buildProductDto() {
-    return ProductDto.builder()
-            .name(name)
-            .description(description)
-            .price(price)
-            .build();
+    return ProductDto.builder().name(name).description(description).price(price).build();
   }
 
   public List<InfoProductDto> buildListInfoProductDto() {

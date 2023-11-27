@@ -1,8 +1,8 @@
 package ru.clevertec.product.mapper.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
@@ -31,6 +31,8 @@ class ProductMapperImplTest {
 
     // Then
     assertThat(actual)
+        .hasFieldOrPropertyWithValue(Product.Fields.uuid, expected.getUuid())
+        .hasFieldOrPropertyWithValue(Product.Fields.created, expected.getCreated())
         .hasFieldOrPropertyWithValue(Product.Fields.name, expected.getName())
         .hasFieldOrPropertyWithValue(Product.Fields.description, expected.getDescription())
         .hasFieldOrPropertyWithValue(Product.Fields.price, expected.getPrice());
@@ -38,13 +40,9 @@ class ProductMapperImplTest {
 
   @Test
   void testToProduct_whenToProductWithNullProductDto_thenProductNotFoundExceptionExpected() {
-    // given
-    ProductDto productDto = null;
-
     // when
     ProductNotFoundException thrown =
-        Assertions.assertThrows(
-            ProductNotFoundException.class, () -> productMapper.toProduct(productDto));
+        assertThrows(ProductNotFoundException.class, () -> productMapper.toProduct(null));
     // then
     assertThat(thrown).hasMessage(ProductNotFoundException.DEFAULT_MESSAGE);
   }
@@ -75,8 +73,7 @@ class ProductMapperImplTest {
 
     // when
     ProductNotFoundException thrown =
-        Assertions.assertThrows(
-            ProductNotFoundException.class, () -> productMapper.toInfoProductDto(product));
+        assertThrows(ProductNotFoundException.class, () -> productMapper.toInfoProductDto(product));
     // then
     assertThat(thrown).hasMessage(ProductNotFoundException.DEFAULT_MESSAGE);
   }
@@ -108,7 +105,7 @@ class ProductMapperImplTest {
 
     // when
     ProductNotFoundException thrown =
-        Assertions.assertThrows(
+        assertThrows(
             ProductNotFoundException.class, () -> productMapper.merge(product, productDto));
     // then
     assertThat(thrown).hasMessage(ProductNotFoundException.DEFAULT_MESSAGE);
